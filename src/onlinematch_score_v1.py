@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 from collections import defaultdict
 import re
@@ -5,6 +6,7 @@ import os
 import time
 import pickle
 from datetime import datetime
+
 csv.field_size_limit(500*1024*1024)
 
 def execution_time_decorator(func):
@@ -17,7 +19,7 @@ def execution_time_decorator(func):
         return result
     return wrapper
 
-@execution_time_decorator
+#@execution_time_decorator
 def load_test_csv(file_path):
     '''
     Step1: 加载测试在线chunk csv文件
@@ -30,7 +32,7 @@ def load_test_csv(file_path):
             test_csv.append(row)
     return test_csv
 
-@execution_time_decorator
+#@execution_time_decorator
 def load_log(log_path):
     '''
     OR step1: 加载日志在线chunk txt文件
@@ -39,20 +41,31 @@ def load_log(log_path):
     with open(log_path, 'r') as file:
         lines = file.readlines()
         # log_content = file.read()
-    for line in lines:
+    for idx, line in enumerate(lines):
         key = line.split(',')[4].strip(' ')
-        chunk_list = []
-        match = re.search(r'chunk_list:\[([^\]]+)\]', line)
-        if match:
-            chunk_list_str = match.group(1)  # 提取括号内的内容
-            chunk_list_str = chunk_list_str.strip(',')  # 去除首尾的逗号
-            chunk_list = [int(num_str) for num_str in chunk_list_str.split(',') if num_str.strip()]  # 将字符串列表转换为整数列表
-            chunk_tuple_list.append((key, chunk_list)) # 加入元组
-        else:
-            print("invalid chunk_list.")
+
+        cleaned_text = line.split(':')[3].strip().strip('[],\n')
+        if not cleaned_text:
+            # print(f"Line {idx} : invalid chunk_list.")
+            chunk_tuple_list.append((key, []))
+            continue
+
+        chunk_list = [int(num) for num in cleaned_text.split(',')]
+        chunk_tuple_list.append((key, chunk_list))
+
+        # chunk_list = []
+        # match = re.search(r'chunk_list:\[(.*?)\]', line) # r"" chunk_list:\[([^\]]+)\]
+        # if match:
+        #     chunk_list_str = match.group(1)  # 提取括号内的内容
+        #     chunk_list_str = chunk_list_str.strip(',')  # 去除首尾的逗号
+        #     chunk_list = [int(num_str) for num_str in chunk_list_str.split(',') if num_str.strip()]  # 将字符串列表转换为整数列表
+        #     chunk_tuple_list.append((key, chunk_list)) # 加入元组
+        # else:
+        #     print("invalid chunk_list.")
+
     return chunk_tuple_list
 
-@execution_time_decorator
+#@execution_time_decorator
 def load_fingerprint_db(file_path):
     '''
     step2: 加载一个博主的指纹库
@@ -68,38 +81,44 @@ def load_fingerprint_db(file_path):
             fingerprint_db.append(row)
     return fingerprint_db
 
-@execution_time_decorator
+#@execution_time_decorator
 def load_fingerprint_db_all(file_folder, pickle_file):
     '''
     OR step2: 加载所有博主的指纹库
     '''
-    if os.path.exists(pickle_file):
-        fingerprint_db = pickle_load(pickle_file) # 有pickle，加载pickle
+    if 1==0:
+        pass
+    # if os.path.exists(pickle_file):
+    #     fingerprint_db = pickle_load(pickle_file) # 有pickle，加载pickle
     else:
         fingerprint_db = []
-        id = 0
+        line_id = 0
         for filename in os.listdir(file_folder):
             file_path = os.path.join(file_folder,filename).replace('\\', '/')
             with open(file_path, mode='r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    row['ID'] = id
-                    id += 1
+                    # row['ID'] = id
+                    fingerprint_db.append(row) # 行号
+                    row['line_id'] = line_id
+                    line_id += 1
                     row['video_fp'] = list(map(int, row['video_fp'].split('/')[1:]))
                     row['audio_fp'] = list(map(int, row['audio_fp'].split('/')[1:]))
                     row['video_timeline'] = list(map(int, row['video_timeline'].split('/')[1:]))
                     row['audio_timeline'] = list(map(int, row['audio_timeline'].split('/')[1:]))
-                    fingerprint_db.append(row)
+                    
+                    # fingerprint_db.append({'line_id': line_id, 'ID':row['ID'], 'url':row['url'], 'video_itag':row['video_itag'], 'video_quality':row['video_quality'], 'video_format':row['video_format'], 'video_header_end':row['video_header_end'], 'audio_itag':row['audio_itag'], 'audio_quality':row['audio_quality'], 'audio_format':row['audio_format'], 'video_fp':row['video_fp'], 'video_timeline':row['video_timeline'], 'audio_fp':row['audio_fp'], 'audio_timeline':row['audio_timeline']})
+                    
         pickle_gen(fingerprint_db, pickle_file) # 没有pickle，生成pickle
     return fingerprint_db
 
-@execution_time_decorator
+#@execution_time_decorator
 def pickle_gen(fingerprint_db, pickle_file):
     with open(pickle_file, 'wb') as f:
         pickle.dump(fingerprint_db, f)
     print("pickle generated.")
 
-@execution_time_decorator
+#@execution_time_decorator
 def pickle_load(pickle_file):
     with open(pickle_file, 'rb') as f:
         return pickle.load(f)
@@ -123,7 +142,7 @@ def _word_counts(dict_list):
         summed_dict[k] += v
     return dict(summed_dict)
 
-@execution_time_decorator
+#@execution_time_decorator
 def _calculate_weighted_max_url(data, max_coef=0.35, total_coef=0.21, avg_coef=0.14, vadiff_coef=0.30):
     """
     计算给定字典列表中每个url的match_score的总和、平均值、最大值和平均va字段差值
@@ -166,7 +185,7 @@ def _calculate_weighted_max_url(data, max_coef=0.35, total_coef=0.21, avg_coef=0
 
     return max_weighted_url, max_weighted_value
 
-@execution_time_decorator
+#@execution_time_decorator
 def decide_best_match(matches):
     global fingerprint_db
     if not matches:
@@ -184,7 +203,8 @@ def decide_best_match(matches):
         case s if s == 1:
             global final_result
             final_result = alive_matches[0]['url']
-            return final_result
+            final_result_id = alive_matches[0]['line_id']
+            return final_result, final_result_id
         case _:
             ret_match = max(alive_matches, key=lambda x: x['match_score'])
             max_m_score = ret_match['match_score']
@@ -203,7 +223,7 @@ def match_chunk_with_fingerprint(chunk, fingerprint, v_start_idx, a_start_idx, f
     # max_video_blocks = 5  #1~5  78%
     # max_audio_blocks = 4  #0~4 OK
 
-    v_start_len = max_video_blocks if flexible else 1 #默认考虑一个chunk偏移
+    v_start_len = max_video_blocks if flexible else 1 # 默认考虑一个chunk偏移
     a_start_len = max_audio_blocks if flexible else 1
 
     for v_start in range(v_start_idx, v_start_idx+v_start_len):
@@ -216,12 +236,16 @@ def match_chunk_with_fingerprint(chunk, fingerprint, v_start_idx, a_start_idx, f
                         total_sum = video_sum + audio_sum
                         if -2000 <= chunk-total_sum < 5000:
                             # if  "Ve" in fingerprint['url'] and fingerprint['ID']=='1': 
-                            #     print(f"--{chunk}\nMatch {fingerprint['ID']}: {fingerprint['url'][-11:]}: \n {video_sum}={video_fp[v_start:v_end]}s_idx:{v_start} \n {audio_sum}={audio_fp[a_start:a_end]}s_idx:{a_start} \n {chunk-total_sum}")
+                            # print(f"--{chunk}\nMatch Line{fingerprint['line_id']}: {fingerprint['url'][-11:]}: \n {video_sum}={video_fp[v_start:v_end]}s_idx:{v_start} \n {audio_sum}={audio_fp[a_start:a_end]}s_idx:{a_start} \n {chunk-total_sum}")
+                            key = str(fingerprint['line_id']) + '_' + fingerprint['url']
+                            if key not in match_info:
+                                match_info[key] = []
+                            match_info[key].append({chunk:[video_fp[v_start:v_end], audio_fp[a_start:a_end], chunk-total_sum]})
                             return True, v_end, a_end, v_start==v_start_idx, a_start==a_start_idx # return:（boolean, 下一个chunk去匹配每一行时的v_start_idx, 同理a_start_idx）
     
     return False, -1, -1, False, False
 
-@execution_time_decorator
+#@execution_time_decorator
 def update_matches(new_chunk, fingerprint_db, i, flexible=False, is_restart=False):
     """
     期待的是：出现两两连续
@@ -237,6 +261,7 @@ def update_matches(new_chunk, fingerprint_db, i, flexible=False, is_restart=Fals
                 success, v_idx, a_idx, is_v_lx, is_a_lx = match_chunk_with_fingerprint(new_chunk, fingerprint, 0, 0, flexible=True) # 一个块和一行指纹的匹配结果
                 if success:
                     m_info = {
+                        'line_id': fingerprint['line_id'],
                         'ID': fingerprint['ID'], # 用于关联
                         'cache_idx': cache_idx, # 在列表fingerprint_db中的索引（内存中）
                         'url': fingerprint['url'], 
@@ -308,12 +333,30 @@ def update_matches(new_chunk, fingerprint_db, i, flexible=False, is_restart=Fals
         # print('***********restarted***********')
         # return main(cur_context['test_case'], is_restart=True)
 
-@execution_time_decorator
+def print_match_info(match_url):
+    match_len = 0
+    best_value = []
+    for key, value in match_info.items():
+        if key.split('_', 1)[1] == match_url:
+            if len(value) > match_len:
+                match_len = len(value)
+                best_value = value
+    for dict in best_value:
+        # 获取键和值
+        key = list(dict.keys())[0]
+        value = dict[key]
+        print(key, ": v=", value[0], " a=", value[1], " sub=", value[2])
+    print('\n')
+    return best_value
+ 
+#@execution_time_decorator
 def main(test_case, fingerprint_db,is_restart=False):
     # init
     global final_result
     global chunk_stream, current_matches
     global cur_context # for restart
+    global match_info
+    match_info = {}
     if not is_restart:
         chunk_stream = []
         current_matches = []
@@ -332,13 +375,16 @@ def main(test_case, fingerprint_db,is_restart=False):
         if not final_result:
             best_match_url = update_matches(new_chunk, fingerprint_db, i, flexible=((i%2==0) or is_restart), is_restart=is_restart)
             print(f'Best match URL: {best_match_url}')
+            print_match_info(best_match_url)
             ret = best_match_url
             best_match_url_history[ret] += 1
             if best_match_url_history[ret] >= 3: #连续3次返回同样的结果时，后续就不再进行匹配，直接返回该结果。
                 final_result = ret
         else:
             print(f"=-=-=-=Final result: {final_result}=-=-=-=")
+            # print_match_info(final_result)
             ret = final_result
+    
     return ret
 
 if __name__ == '__main__':
@@ -356,6 +402,10 @@ if __name__ == '__main__':
     for idx, test_case in enumerate(test_cases):
         print("#"*40 + f"第{idx}条测试用例" + "#"*40)
         print("#"*28 + test_case[0] + "#"*28)
+        if not test_case[1]:
+            print(f"test_case:{test_case[1]}") 
+            continue
+        
         test_case[1][0] -= 2000
         take_idx = 0
         for i in range(len(test_case[1])):
