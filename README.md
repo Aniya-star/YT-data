@@ -30,10 +30,10 @@ https://www.youtube.com/@stone_ji/videos， 1000
 https://www.youtube.com/@leonard2834/videos， 239	
 
 10	波特王好帥
-https://www.youtube.com/@Realpotterking/videos， 600	
+https://www.youtube.com/@波特王好帥/videos， 600	
 
 11  陳破空縱論天下
-https://www.youtube.com/@user-xl8fu9dw5q/videos, 1020
+https://www.youtube.com/@ChenPokong1/videos, 1020
 
 12  天亮時分
 https://www.youtube.com/@TianLiangTimes/videos, 343
@@ -42,7 +42,7 @@ https://www.youtube.com/@TianLiangTimes/videos, 343
 https://www.youtube.com/@xiaodaodalang/videos, 179
 
 14  郭文贵
-https://www.youtube.com/@user-jt1zr1ey7v/videos, 1020
+https://www.youtube.com/@郭文贵-u7l/videos, 1020
 
 15  世界看台灣
 https://www.youtube.com/@Taiwan16888/videos, 1020
@@ -60,7 +60,7 @@ https://www.youtube.com/@WuJianMin/videos, 1020
 https://www.youtube.com/@wuyuesanren/videos, 1020
 
 20  睿眼看世界
-https://www.youtube.com/@user-tp1lk6kj1g/videos, 1020
+https://www.youtube.com/@睿眼看世界/videos, 1020
 
 【排名参考】：https://www.youtube.com/watch?v=yIUk5oMroFc
 
