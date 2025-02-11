@@ -6,31 +6,31 @@
 https://www.youtube.com/@wenzhaoofficial/videos, 1400
 
 2	江峰时刻
-https://www.youtube.com/@JiangFengTimes/videos，1288	
+https://www.youtube.com/@JiangFengTimes/videos, 1288	
 
 3	攝徒日記Fun TV
-https://www.youtube.com/@funtv8964/videos， 1349	
+https://www.youtube.com/@funtv8964/videos, 1349	
 
 4	新聞看點 李沐陽
-https://www.youtube.com/@MuYangShow/videos， 1901	
+https://www.youtube.com/@MuYangShow/videos, 1901	
 
 5	王剑每日观察Kim's Observation
-https://www.youtube.com/@wongkim728/videos， 746	
+https://www.youtube.com/@wongkim728/videos, 746	
 
 6	memehongkong
-https://www.youtube.com/@memehongkong/videos， 1020
+https://www.youtube.com/@memehongkong/videos, 1020
 
 7	王志安
-https://www.youtube.com/@wangzhian/videos， 875	
+https://www.youtube.com/@wangzhian/videos, 875	
 
 8	stone记
-https://www.youtube.com/@stone_ji/videos， 1000	
+https://www.youtube.com/@stone_ji/videos, 1000	
 
 9	Leonard
-https://www.youtube.com/@leonard2834/videos， 239	
+https://www.youtube.com/@leonard2834/videos, 239	
 
 10	波特王好帥
-https://www.youtube.com/@波特王好帥/videos， 600	
+https://www.youtube.com/@波特王好帥/videos, 600	
 
 11  陳破空縱論天下
 https://www.youtube.com/@ChenPokong1/videos, 1020
@@ -67,14 +67,14 @@ https://www.youtube.com/@睿眼看世界/videos, 1020
 ### 电台
 
 1 新唐人電視台
-https://www.youtube.com/@NTDCHINESE/videos， 1020
+https://www.youtube.com/@NTDCHINESE/videos, 1020
 
 2 大紀元新聞網
-https://www.youtube.com/@DJYNews/videos， 1020
+https://www.youtube.com/@DJYNews/videos, 1020
 
 3 美国之音中文网
-https://www.youtube.com/@voachinese/videos， 1020
+https://www.youtube.com/@voachinese/videos, 1020
 
 4 自由亚洲电台
-https://www.youtube.com/@RFACHINESE/videos， 1020
+https://www.youtube.com/@RFACHINESE/videos, 1020
 
